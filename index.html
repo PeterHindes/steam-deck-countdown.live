@@ -117,6 +117,12 @@
         a {
             color: rgb(255, 169, 212);
         }
+
+        /* .adsbygoogle {
+            position: absolute;
+            bottom: 110%;
+            left: 0px;
+        } */
     </style>
 </head>
 <body>
@@ -127,7 +133,7 @@
         var newLink = document.createElement('link');
         newLink.rel = 'shortcut icon';
         newLink.href = 'data:image/png;base64,'+favIcon;
-        docHead.appendChild(newLink);
+        docHead.appendChild(newLink); // Thanks for the favicon code, https://stackoverflow.com/a/5568484
 
         // Thanks to Matt Smith on CodePen, https://codepen.io/AllThingsSmitty/pen/JJavZN
         (function () {
@@ -136,21 +142,21 @@
                 hour = minute * 60,
                 day = hour * 24;
 
-        //I'm adding this section so I don't have to keep updating this pen every year :-)
-        //remove this if you don't need it
         let today = new Date(),
             dd = String(today.getDate()).padStart(2, "0"),
             mm = String(today.getMonth() + 1).padStart(2, "0"),
             // yyyy = today.getFullYear(),
             yyyy = "2022",
-            nextYear = yyyy + 1,
-            dayMonth = "02/25/", // February 25, 2022
-            birthday = dayMonth + yyyy;
+            // nextYear = yyyy + 1,
+            //dayMonth = "02/25/", // February 25, 2022
+            birthday = 'Feb 25 2022 10:00:00 PST'; // Idk probably local time relative? Update it is, checked it with this great calculator https://www.timeanddate.com/date/timezoneduration.html
+       
+        //today = new Date('Feb 28 2013 19:00:00 EST')
         
-        today = mm + "/" + dd + "/" + yyyy;
-        if (today > birthday) {
-            birthday = dayMonth + nextYear;
-        }
+        today = mm + "/" + dd + "/" + yyyy; // Should be local time
+        // if (today > birthday) {
+        //     birthday = dayMonth + nextYear;
+        // }
         //end
         
         const countDown = new Date(birthday).getTime(),
@@ -177,7 +183,7 @@
 
         // Count Api
         function cb(response) {
-            document.getElementById('visits').innerText = "Page loaded " + response.value + " times so far! The hype is real!";
+            document.getElementById('visits').innerHTML = "Page loaded " + response.value + " times so far! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a>";
         }
     </script>
     <script async src="https://api.countapi.xyz/hit/steam-deck-countdown.live/visits?callback=cb"></script>
@@ -188,8 +194,17 @@
         </a>
         <br>
         <a href="https://countapi.xyz/" target="_blank" rel="noopener noreferrer">
-            And CountAPI
+            CountAPI
         </a>
+        <br>
+        <a href="https://stackoverflow.com/a/5568484" target="_blank" rel="noopener noreferrer">
+            Marcel
+        </a>
+        and
+        <a href="https://stackoverflow.com/a/35197259">
+            maowtm
+        </a>
+        from Stack Overflow for the favicon and correct timezone code respectively
     </div>
     <div id="selfpromo" class="corners">
         <a href="https://github.com/PeterHindes/steam-deck-countdown.live" target="_blank" rel="noopener noreferrer">Check Out The Code On My Github</a>
@@ -213,6 +228,21 @@
         <a href="https://store.steampowered.com/steamdeck/" target="_blank" rel="noopener noreferrer">
             <h1 id="headline">Reserve Your Spot In Line Here</h1>
         </a>
-      </div>
+    </div>
+
+
+    <!-- ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5290227775393401"
+        crossorigin="anonymous"></script>
+    <!-- Bottom Of Page -->
+    <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-5290227775393401"
+        data-ad-slot="7096253206"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 </body>
 </html>
