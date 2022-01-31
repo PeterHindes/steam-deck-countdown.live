@@ -90,11 +90,17 @@
         }
         }
         .corners {
-            overflow-wrap: anywhere;
-            max-width: 40%;
+            /* overflow-wrap: anywhere; */
+            max-width: 45%;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+            overflow: hidden;
             color: whitesmoke;
         }
         #visits {
+            max-width: 80%;
             position: absolute;
             bottom: 15px;
             right: 15px;
@@ -200,25 +206,25 @@
         xhr.open("GET", "https://api.countapi.xyz/"+modeName+"/steam-deck-countdown.live-uniq/visits");
         xhr.responseType = "json";
         xhr.onload = function() {
-            document.getElementById('uniq-visits').innerHTML = "<a href=\"https://www.w3schools.com/js/js_cookies.asp\" target=\"_blank\" rel=\"noopener noreferrer\" >" + this.response.value + " unique visits so far since 1/31/22@6am!</a> Thanks Friends!";
+            document.getElementById('visits').innerHTML = "<a href=\"https://www.w3schools.com/js/js_cookies.asp\" target=\"_blank\" rel=\"noopener noreferrer\" >" + this.response.value + " unique visits so far since 1/31/22@6am!</a> Thanks Friends!";
         }
         xhr.send();
         // Count Api function to load data
         function cb(response) {
-            document.getElementById('visits').innerHTML = "Page loaded " + response.value + " times so far! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a>";
+            document.getElementById('visits').innerHTML += "<br>Page loaded " + response.value + " times so far! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a>";
         }
     </script>
     <script async src="https://api.countapi.xyz/hit/steam-deck-countdown.live/visits?callback=cb"></script>
-    <div id="visits" class="corners">...</div>
-    <div id="uniq-visits" class="corners">...</div>
+    <div id="visits" class="corners">Loading fun data...</div>
     <div id="credits" class="corners">
         <a href="https://codepen.io/AllThingsSmitty/pen/JJavZN" target="_blank" rel="noopener noreferrer">
-            Thanks to Matt Smith on codepen
+            Thanks to Matt Smith
         </a>
+        on codepen,
         <br>
         <a href="https://countapi.xyz/" target="_blank" rel="noopener noreferrer">
             CountAPI
-        </a>
+        </a>, and
         <br>
         <a href="https://stackoverflow.com/a/5568484" target="_blank" rel="noopener noreferrer">
             Marcel
@@ -227,13 +233,14 @@
         <a href="https://stackoverflow.com/a/35197259">
             maowtm
         </a>
-        from Stack Overflow for the favicon and correct timezone code respectively
+        from Stack Overflow
     </div>
     <div id="selfpromo" class="corners">
         <a href="https://github.com/PeterHindes/steam-deck-countdown.live" target="_blank" rel="noopener noreferrer">Check Out The Code On My Github!</a>
         <br>
+        Or 
         <a href="https://www.youtube.com/channel/UCNfYqDetbEI3rVREc5MhUmg" target="_blank" rel="noopener noreferrer">
-            Or My YouTube Channel If Your Bored While Waiting
+            My YouTube Channel If Your Bored While Waiting
         </a>
     </div>
     
