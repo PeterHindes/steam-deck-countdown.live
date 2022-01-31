@@ -100,7 +100,7 @@
             color: whitesmoke;
         }
         #visits {
-            max-width: 80%;
+            max-width: 85%;
             position: absolute;
             bottom: 15px;
             right: 15px;
@@ -199,22 +199,32 @@
         let modeName="hit";
         // Cookies, the europeans will be scared, but they are not for tracking
         //console.log(document.cookie.includes("herebefore=true")); // thanks w3schools.com
-        if (document.cookie.includes("herebefore=true")){
+        let herebefore = localStorage.getItem("herebefore") == "yes";
+        console.log(herebefore);
+        if (herebefore){
             modeName="get";
+        } else {
+            localStorage.setItem("herebefore", "yes");
         }
-        document.cookie = "herebefore=true";
+        console.log(modeName);
         xhr.open("GET", "https://api.countapi.xyz/"+modeName+"/steam-deck-countdown.live-uniq/visits");
         xhr.responseType = "json";
-        xhr.onload = function() {
-            document.getElementById('visits').innerHTML = "<a href=\"https://www.w3schools.com/js/js_cookies.asp\" target=\"_blank\" rel=\"noopener noreferrer\" >" + this.response.value + " unique visits so far since 1/31/22@6am!</a> Thanks Friends!";
+        xhr.onload = function() { //Warning Race Condition!
+            document.getElementById('visits').innerHTML = "<a href=\"https://www.w3schools.com/js/js_cookies.asp\" target=\"_blank\" rel=\"noopener noreferrer\" >" + this.response.value + " unique visits so far since 1/31/22@6am!</a> Thanks Friends! <!-- fetch complete -->" + document.getElementById('visits').innerHTML.replace(/Loading fun data\.\.\./g, "");
         }
         xhr.send();
+    
+
         // Count Api function to load data
-        function cb(response) {
-            document.getElementById('visits').innerHTML += "<br>Page loaded " + response.value + " times so far! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a>";
+        var xhrtotal = new XMLHttpRequest();
+        xhrtotal.open("GET", "https://api.countapi.xyz/hit/steam-deck-countdown.live/visits");
+        xhrtotal.responseType = "json";
+        xhrtotal.onload = function() { //Warning Race Condition!
+            document.getElementById('visits').innerHTML = document.getElementById('visits').innerHTML.replace(/Loading fun data\.\.\./g, "") + "<br>Page loaded " + this.response.value + " times so far! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a> <!-- fetch2 complete -->";
         }
+        xhrtotal.send();
     </script>
-    <script async src="https://api.countapi.xyz/hit/steam-deck-countdown.live/visits?callback=cb"></script>
+    <!-- <script async src="https://api.countapi.xyz/hit/steam-deck-countdown.live/visits?callback=cb"></script> -->
     <div id="visits" class="corners">Loading fun data...</div>
     <div id="credits" class="corners">
         <a href="https://codepen.io/AllThingsSmitty/pen/JJavZN" target="_blank" rel="noopener noreferrer">
