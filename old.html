@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)https://gateway.pinata.cloud/ipfs/QmW1n2nKETegb1Z1smhKhCpxAwmqTb5y6qfCazPDPRu4Fx?preview=1 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TestPage</title>
+    <style>
+
+    </style>
+  </head>
+  <body>
+    <script> // Credit to https://stackoverflow.com/a/9335296
+        //February 25, 2022
+        CountDownTimer('02/25/2022 12:00 AM', 'countdown');
+
+        function CountDownTimer(dt, id)
+        {
+            var end = new Date(dt);
+
+            var _second = 1000;
+            var _minute = _second * 60;
+            var _hour = _minute * 60;
+            var _day = _hour * 24;
+            var timer;
+
+            function showRemaining() {
+                var now = new Date();
+                var distance = end - now;
+                if (distance < 0) {
+
+                    clearInterval(timer);
+                    document.getElementById(id).innerHTML = 'Its Out!';
+
+                    return;
+                }
+                var days = Math.floor(distance / _day);
+                var hours = Math.floor((distance % _day) / _hour);
+                var minutes = Math.floor((distance % _hour) / _minute);
+                var seconds = Math.floor((distance % _minute) / _second);
+
+                document.getElementById(id).innerHTML = days + 'days ';
+                document.getElementById(id).innerHTML += hours + 'hrs ';
+                document.getElementById(id).innerHTML += minutes + 'mins ';
+                document.getElementById(id).innerHTML += seconds + 'secs';
+            }
+
+            timer = setInterval(showRemaining, 1000);
+        }
+        function cb(response) {
+            document.getElementById('visits').innerText = response.value;
+        }
+
+    </script>
+    <script async src="https://api.countapi.xyz/hit/steam-deck-countdown.live/visits?callback=cb"></script>
+    <div id="countdown" style="display: inline">Coming February 25, 2022, loading countdown...</div>  <br/>
+    <div id="visits" style="display: inline">...</div> page visits so far! The hype is real!
+</body></html>
