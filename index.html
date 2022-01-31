@@ -9,7 +9,6 @@
     <!-- Handled by js for single page goodness -->
     <link rel="shortcut icon"type="image/x-icon" href="data:image/x-icon;,">
     <style>
-        
         /* general styling */
         :root {
         --smaller: .75;
@@ -103,6 +102,13 @@
             color: whitesmoke;
             text-align: right;
         }
+        #selfpromo {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: whitesmoke;
+            text-align: left;
+        }
         a {
             color: rgb(255, 169, 212);
         }
@@ -172,13 +178,16 @@
     <script async src="https://api.countapi.xyz/hit/steam-deck-countdown.live/visits?callback=cb"></script>
     <div id="visits">...</div>
     <div id="credits">
-        <a href="https://codepen.io/AllThingsSmitty/pen/JJavZN">
+        <a href="https://codepen.io/AllThingsSmitty/pen/JJavZN" target="_blank" rel="noopener noreferrer">
             Thanks to Matt Smith on codepen
         </a>
         <br>
-        <a href="https://countapi.xyz/">
+        <a href="https://countapi.xyz/" target="_blank" rel="noopener noreferrer">
             And CountAPI
         </a>
+    </div>
+    <div id="selfpromo">
+        <a href="https://github.com/PeterHindes/steam-deck-countdown.live" target="_blank" rel="noopener noreferrer">Check Out The Code On My Github</a>
     </div>
     
     <div class="container">
