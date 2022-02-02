@@ -194,35 +194,101 @@
             }, 0)
         }());
 
-        // Count API, now with cookies to prevent accidental spam
-        var xhr = new XMLHttpRequest();
-        let modeName="hit";
-        // Cookies, the europeans will be scared, but they are not for tracking
-        //console.log(document.cookie.includes("herebefore=true")); // thanks w3schools.com
-        let herebefore = localStorage.getItem("herebefore") == "yes";
-        console.log(herebefore);
-        if (herebefore){
-            modeName="get";
-        } else {
-            localStorage.setItem("herebefore", "yes");
+        // Count api in a function
+        // Thanks https://www.sohamkamani.com/blog/javascript-localstorage-with-ttl-expiry/
+        function setWithExpiry(key, value, timeoutEnabled) {
+            //const now = new Date()
+            var d = new Date();
+            d.setUTCHours(24,0,0,0); // next midnight
+
+            // `item` is an object which contains the original value
+            // as well as the time when it's supposed to expire
+            let item
+            if (timeoutEnabled){
+                item = {
+                    value: value,
+                    expiry: d.getTime(), // Thanks https://stackoverflow.com/a/15790005   //now.getTime() + ttl, 
+                }
+            } else {
+                item = {
+                    value: value,
+                    expiry: "No", // Thanks https://stackoverflow.com/a/15790005   //now.getTime() + ttl, 
+                }
+            }
+            localStorage.setItem(key, JSON.stringify(item))
         }
-        console.log(modeName);
-        xhr.open("GET", "https://api.countapi.xyz/"+modeName+"/steam-deck-countdown.live-uniq/visits");
-        xhr.responseType = "json";
-        xhr.onload = function() { //Warning Race Condition!
-            document.getElementById('visits').innerHTML = "<a href=\"https://www.w3schools.com/js/js_cookies.asp\" target=\"_blank\" rel=\"noopener noreferrer\" >" + this.response.value + " unique visits so far since 1/31/22@6am!</a> Thanks Friends! <!-- fetch complete -->" + document.getElementById('visits').innerHTML.replace(/Loading fun data\.\.\./g, "");
+        function getWithExpiry(key) {
+            const itemStr = localStorage.getItem(key)
+            // if the item doesn't exist, return null
+            if (!itemStr) {
+                return null
+            }
+            const item = JSON.parse(itemStr)
+            const now = new Date()
+            // compare the expiry time of the item with the current time
+            if (now.getTime() > item.expiry && item.expiry != "No") {
+                // If the item is expired, delete the item from storage
+                // and return null
+                localStorage.removeItem(key)
+                return null
+            }
+            return item.value
         }
-        xhr.send();
+        function counterInit(codeName, noSpam, timeOutAfterMidnight, htmlPreOnLoad, htmlPostOnload) {
+            var xhr = new XMLHttpRequest();
+            let modeName="hit";
+            // Cookies (not really, now we use local storage), the europeans will be scared, but they are not for tracking
+            if (noSpam){
+                let herebefore = getWithExpiry(codeName) == "yes";
+                if (herebefore){
+                    modeName="get";
+                } else {
+                    setWithExpiry(codeName ? codeName : "@root", "yes", timeOutAfterMidnight)
+                }
+            }
+            //console.log(herebefore);
+            console.log(modeName);
+            xhr.open("GET", "https://api.countapi.xyz/"+modeName+"/steam-deck-countdown.live"+(codeName ? "-" : "")+codeName+"/visits");
+            xhr.responseType = "json";
+            xhr.onload = function() { //Warning Race Condition! Its fixed now
+                document.getElementById("visits").innerHTML = document.getElementById("visits").innerHTML.replace(/Loading fun data\.\.\./g, "")
+                document.getElementById("visits").innerHTML = document.getElementById("visits").innerHTML + htmlPreOnLoad + this.response.value + htmlPostOnload
+            }
+            xhr.send();
+        }
+
+        counterInit("",false,false,"<br>Page Loaded "," times so far! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a>")
+        counterInit("uniq",true,false,"<br>"," unique visits so far since 1/31/22 at 6am! Thanks Friends!")
+        counterInit("todayuniq",true,true,"<br>"," unique visits so far since last UTC midnight! Wow!")
+        // // Count API, now with cookies to prevent accidental spam
+        // var xhr = new XMLHttpRequest();
+        // let modeName="hit";
+        // // Cookies, the europeans will be scared, but they are not for tracking
+        // //console.log(document.cookie.includes("herebefore=true")); // thanks w3schools.com
+        // let herebefore = localStorage.getItem("herebefore") == "yes";
+        // console.log(herebefore);
+        // if (herebefore){
+        //     modeName="get";
+        // } else {
+        //     localStorage.setItem("herebefore", "yes");
+        // }
+        // console.log(modeName);
+        // xhr.open("GET", "https://api.countapi.xyz/"+modeName+"/steam-deck-countdown.live-uniq/visits");
+        // xhr.responseType = "json";
+        // xhr.onload = function() { //Warning Race Condition!
+        //     document.getElementById('visits').innerHTML = "<a href=\"https://www.w3schools.com/js/js_cookies.asp\" target=\"_blank\" rel=\"noopener noreferrer\" >" + this.response.value + " unique visits so far since 1/31/22@6am!</a> Thanks Friends! <!-- fetch complete -->" + document.getElementById('visits').innerHTML.replace(/Loading fun data\.\.\./g, "");
+        // }
+        // xhr.send();
     
 
-        // Count Api function to load data
-        var xhrtotal = new XMLHttpRequest();
-        xhrtotal.open("GET", "https://api.countapi.xyz/hit/steam-deck-countdown.live/visits");
-        xhrtotal.responseType = "json";
-        xhrtotal.onload = function() { //Warning Race Condition!
-            document.getElementById('visits').innerHTML = document.getElementById('visits').innerHTML.replace(/Loading fun data\.\.\./g, "") + "<br>Page loaded " + this.response.value + " times so far! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a> <!-- fetch2 complete -->";
-        }
-        xhrtotal.send();
+        // // Count Api function to load data
+        // var xhrtotal = new XMLHttpRequest();
+        // xhrtotal.open("GET", "https://api.countapi.xyz/hit/steam-deck-countdown.live/visits");
+        // xhrtotal.responseType = "json";
+        // xhrtotal.onload = function() { //Warning Race Condition!
+        //     document.getElementById('visits').innerHTML = document.getElementById('visits').innerHTML.replace(/Loading fun data\.\.\./g, "") + "<br>Page loaded " + this.response.value + " times so far! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a> <!-- fetch2 complete -->";
+        // }
+        // xhrtotal.send();
     </script>
     <!-- <script async src="https://api.countapi.xyz/hit/steam-deck-countdown.live/visits?callback=cb"></script> -->
     <div id="visits" class="corners">Loading fun data...</div>
