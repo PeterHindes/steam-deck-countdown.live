@@ -29,7 +29,6 @@
         body {
         text-shadow: 6px 6px 15px black;
         align-items: center;
-        background: linear-gradient(137.42deg, #2A87DE -100%, #DE57C5 200%);
         display: flex;
         font-family: -apple-system, 
             BlinkMacSystemFont, 
@@ -40,6 +39,45 @@
             Cantarell, 
             "Helvetica Neue", 
             sans-serif;
+        }
+
+        /* This is now the background for your body above
+        As such some of the styling elements have made their way over to here */
+        #gradient-background {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+        z-index: 0;
+        }
+        
+        #gradient-background:before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        width: 200%;
+        height: 200%;
+        /* Feel free to add more colours here (separated by commas), although, the animation may need adjusting if you do */
+        background: linear-gradient(137.42deg, #1A9FFF 0%, #6A5DF8 50.43%, #C957E6  100%);
+        animation: gradient 20s infinite ease;
+        }
+
+        /* This animation is simply rotating the gradient above, whilst sliding the image over and zooming in slightly.
+        This gives the effect that the colours are shifting rather than just sliding across the screen or rotating..
+        Nothing major, just a subtle effect! */
+        @keyframes gradient {
+            0% {
+                transform: rotate(0deg) translateX(-50%) scale(2);
+            }
+            50% {
+                transform: rotate(360deg) translateX(100%) scale(3);
+            }
+            100% {
+                transform: rotate(720deg) translateX(-50%) scale(2);
+            }
         }
 
         .container {
@@ -133,6 +171,7 @@
     </style>
 </head>
 <body>
+    <div id="gradient-background">
     <script>
         // Favicon
         let favIcon="unknown!";
@@ -351,5 +390,6 @@
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
+    </div>
 </body>
 </html>
