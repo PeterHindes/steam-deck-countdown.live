@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="darkreader" content="someUIDhere">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;  user-scalable=0;">
     <meta name="description" content="A big countdown timer for keeping an eye on when the steam deck is releasing" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Days Till Steam Deck Release</title>
@@ -15,6 +15,8 @@
         /* general styling */
         :root {
         --smaller: .75;
+        --vw: 200%;
+        --vh: 200%;
         }
 
         * {
@@ -30,6 +32,7 @@
 
         body {
         text-shadow: 6px 6px 15px black;
+        background-color: #6A5DF8;
         align-items: center;
         display: flex;
         font-family: -apple-system, 
@@ -55,13 +58,13 @@
         position: relative;
         z-index: 0;
         }
-        
+
         #gradient-background:before {
         content: "";
         position: absolute;
         z-index: -1;
-        width: 200%;
-        height: 200%;
+        width: var(--vw);
+        height: var(--vh);
         /* Feel free to add more colours here (separated by commas), although, the animation may need adjusting if you do */
         background: linear-gradient(137.42deg, #1A9FFF 0%, #6A5DF8 50.43%, #C957E6  100%);
         animation: gradient 20s infinite ease;
@@ -72,13 +75,13 @@
         Nothing major, just a subtle effect! */
         @keyframes gradient {
             0% {
-                transform: rotate(0deg) translateX(-50%) scale(2);
+                transform: rotate(0deg) translateX(-25%) scale(2);
             }
             50% {
                 transform: rotate(360deg) translateX(100%) scale(3);
             }
             100% {
-                transform: rotate(720deg) translateX(-50%) scale(2);
+                transform: rotate(720deg) translateX(-25%) scale(2);
             }
         }
 
@@ -355,6 +358,12 @@
         data-full-width-responsive="true"></ins>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
+        window.onresize = function(event)
+        {
+            let root = document.documentElement;
+            root.style.setProperty('--vw', window.outerWidth + "vmin");
+            root.style.setProperty('--vh', window.outerHeight + "vmin");
+        }
     </script>
     </div>
 </body>
