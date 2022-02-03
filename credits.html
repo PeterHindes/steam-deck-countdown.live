@@ -12,26 +12,26 @@
     <!-- Handled by js for single page goodness -->
     <link rel="shortcut icon"type="image/x-icon" href="data:image/x-icon;,">
     <style>
-        /* general styling */
-        :root {
-        --smaller: .75;
+            /* general styling */
+            :root {
+            --smaller: .75;
         }
 
         * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+            /* box-sizing: border-box; */
+            margin: 0;
+            padding: 0;
         }
 
         html, body {
-        height: 100%;
-        margin: 0;
+            height: 100%;
+            margin: 0;
         }
 
         body {
         text-shadow: 6px 6px 15px black;
-        align-items: center;
-        display: flex;
+        /* align-items: center;
+        display: flex; */
         font-family: -apple-system, 
             BlinkMacSystemFont, 
             "Segoe UI", 
@@ -46,25 +46,25 @@
         /* This is now the background for your body above
         As such some of the styling elements have made their way over to here */
         #gradient-background {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        position: relative;
-        z-index: 0;
+            height: 100%;
+            width: 100%;
+            /* display: flex;
+            justify-content: center;
+            align-items: center;*/
+            overflow: hidden; 
+            position: relative;
+            z-index: 0;
         }
         
         #gradient-background:before {
-        content: "";
-        position: absolute;
-        z-index: -1;
-        width: 200%;
-        height: 200%;
-        /* Feel free to add more colours here (separated by commas), although, the animation may need adjusting if you do */
-        background: linear-gradient(137.42deg, #1A9FFF 0%, #6A5DF8 50.43%, #C957E6  100%);
-        animation: gradient 20s infinite ease;
+            content: "";
+            position: absolute;
+            z-index: -1;
+            width: 200%;
+            height: 200%;
+            /* Feel free to add more colours here (separated by commas), although, the animation may need adjusting if you do */
+            background: linear-gradient(137.42deg, #1A9FFF 0%, #6A5DF8 50.43%, #C957E6  100%);
+            animation: gradient 20s infinite ease;
         }
 
         /* This animation is simply rotating the gradient above, whilst sliding the image over and zooming in slightly.
@@ -82,91 +82,25 @@
             }
         }
 
-        .container {
-        color: rgb(255, 255, 255);
-        margin: 0 auto;
-        text-align: center;
-        }
-
-        h1 {
-        font-weight: normal;
-        letter-spacing: .125rem;
-        text-transform: uppercase;
-        }
-
-        li {
-        display: inline-block;
-        font-size: 1.5em;
-        list-style-type: none;
-        padding: 1em;
-        text-transform: uppercase;
-        }
-
-        li span {
-        display: block;
-        font-size: 4.5rem;
-        }
-
-        .emoji {
-        display: none;
-        padding: 1rem;
-        }
-
-        .emoji span {
-        font-size: 4rem;
-        padding: 0 .5rem;
-        }
-
-        @media all and (max-width: 768px) {
-        h1 {
-            font-size: calc(1.5rem * var(--smaller));
-        }
-        
-        li {
-            font-size: calc(1.125rem * var(--smaller));
-        }
-        
-        li span {
-            font-size: calc(3.375rem * var(--smaller));
-        }
-        }
-        .corners {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: whitesmoke;
-            /* font-size: 160%; */
-            padding: 15px;
-            position: absolute;
-        }
-        #visits {
-            max-width: 90%;
-            bottom: 0px;
-            right: 0px;
-            text-align: right;
-        }
-        @media only screen 
-        and (max-device-width: 490px) {
-            #visits {
-                bottom: 40px;
-            }
-        }
-        #marketing {
-            bottom: 0px;
-            left: 0px;
-            max-width: 60%;
-        }
-        #credits {
-            top: 0px;
-            right: 0px;
-            text-align: right;
-        }
-        #selfpromo {
-            top: 0px;
-            left: 0px;
-        }
         a {
             color: salmon;
+        }
+        #bag {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+        }
+        #credits {
+            /* Center vertically and horizontally */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: max-content;
+            text-align: center;
+            color: whitesmoke;
         }
 
         .adsbygoogle {
@@ -190,158 +124,30 @@
         newLink.href = 'data:image/png;base64,'+favIcon;
         docHead.appendChild(newLink); // Thanks for the favicon code, https://stackoverflow.com/a/5568484
 
-        // Thanks to Matt Smith on CodePen, https://codepen.io/AllThingsSmitty/pen/JJavZN
-        (function () {
-        const second = 1000,
-                minute = second * 60,
-                hour = minute * 60,
-                day = hour * 24;
-
-        let today = new Date(),
-            dd = String(today.getDate()).padStart(2, "0"),
-            mm = String(today.getMonth() + 1).padStart(2, "0"),
-            // yyyy = today.getFullYear(),
-            yyyy = "2022",
-            // nextYear = yyyy + 1,
-            //dayMonth = "02/25/", // February 25, 2022
-            birthday = 'Feb 25 2022 10:00:00 PST'; // Idk probably local time relative? Update it is, checked it with this great calculator https://www.timeanddate.com/date/timezoneduration.html
-       
-        //today = new Date('Feb 28 2013 19:00:00 EST')
-        
-        today = mm + "/" + dd + "/" + yyyy; // Should be local time
-        // if (today > birthday) {
-        //     birthday = dayMonth + nextYear;
-        // }
-        //end
-        
-        const countDown = new Date(birthday).getTime(),
-            x = setInterval(function() {    
-
-                const now = new Date().getTime(),
-                    distance = countDown - now;
-
-                document.getElementById("days").innerText = Math.floor(distance / (day)),
-                document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
-                document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
-                document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
-
-                //do something later when date is reached
-                if (distance < 0) {
-                document.getElementById("headline").innerText = "The Steam Deck is Right Out Now!\n Get One If You Can!";
-                document.getElementById("countdown").style.display = "none";
-                document.getElementById("content").style.display = "block";
-                clearInterval(x);
-                }
-                //seconds
-            }, 0)
-        }());
-
-        // Count api in a function
-        // Thanks https://www.sohamkamani.com/blog/javascript-localstorage-with-ttl-expiry/
-        function setWithExpiry(key, value, timeoutEnabled) {
-            //const now = new Date()
-            var d = new Date();
-            d.setUTCHours(24,0,0,0); // next midnight
-
-            // `item` is an object which contains the original value
-            // as well as the time when it's supposed to expire
-            let item
-            if (timeoutEnabled){
-                item = {
-                    value: value,
-                    expiry: d.getTime(), // Thanks https://stackoverflow.com/a/15790005   //now.getTime() + ttl, 
-                }
-            } else {
-                item = {
-                    value: value,
-                    expiry: "No", // Thanks https://stackoverflow.com/a/15790005   //now.getTime() + ttl, 
-                }
-            }
-            localStorage.setItem(key, JSON.stringify(item))
-        }
-        function getWithExpiry(key) {
-            const itemStr = localStorage.getItem(key)
-            // if the item doesn't exist, return null
-            if (!itemStr) {
-                return null
-            }
-            const item = JSON.parse(itemStr)
-            const now = new Date()
-            // compare the expiry time of the item with the current time
-            if (now.getTime() > item.expiry && item.expiry != "No") {
-                // If the item is expired, delete the item from storage
-                // and return null
-                localStorage.removeItem(key)
-                return null
-            }
-            return item.value
-        }
-        function counterInit(codeName, noSpam, timeOutAfterMidnight, htmlPreOnLoad, htmlPostOnload) {
-            var xhr = new XMLHttpRequest();
-            let modeName="hit";
-            // Cookies (not really, now we use local storage), the europeans will be scared, but they are not for tracking
-            if (noSpam){
-                let herebefore = getWithExpiry(codeName) == "yes";
-                if (herebefore){
-                    modeName="get";
-                } else {
-                    setWithExpiry(codeName ? codeName : "@root", "yes", timeOutAfterMidnight)
-                }
-            }
-            //console.log(herebefore);
-            console.log(modeName);
-            xhr.open("GET", "https://api.countapi.xyz/"+modeName+"/steam-deck-countdown.live"+(codeName ? "-" : "")+codeName+"/visits");
-            xhr.responseType = "json";
-            xhr.onload = function() { //Warning Race Condition! Its fixed now
-                document.getElementById("visits").innerHTML = document.getElementById("visits").innerHTML.replace(/Loading fun data\.\.\./g, "")
-                document.getElementById("visits").innerHTML = document.getElementById("visits").innerHTML + htmlPreOnLoad + this.response.value + htmlPostOnload
-            }
-            xhr.send();
-        }
-
-        counterInit("",false,false,"<br>Loaded "," times! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a>")
-        counterInit("uniq",true,false,"<br>"," unique visits since 1/31/22 at 6am!")
-        counterInit("todayuniq",true,true,"<br>"," unique visits since midnight!")
     </script>
-    <!-- <script async src="https://api.countapi.xyz/hit/steam-deck-countdown.live/visits?callback=cb"></script> -->
-    <div id="visits" class="corners">Loading fun data...</div>
-    <div id="credits" class="corners">
-        <a href="https://credits.steam-deck-countdown.live">
-            Credits
-        </a>
-    </div>
-    <div id="selfpromo" class="corners">
-        My
-        <a href="https://github.com/PeterHindes/steam-deck-countdown.live" target="_blank" rel="noopener noreferrer"> Code on Github</a>
-        <br> and
-        <a href="https://www.youtube.com/channel/UCNfYqDetbEI3rVREc5MhUmg" target="_blank" rel="noopener noreferrer">
-            YouTube
-        </a>
-    </div>
-    <div id="marketing" class="corners">
-        <a href="https://amzn.to/34bB4kj" target="_blank" rel="noopener noreferrer">Get a TypeC Charging <br> Dongle for your Deck</a>
-    </div>
-    
-    <div class="container">
-        <h1 id="headline">The Steam Deck Will Release In</h1>
-        <div id="countdown">
-          <ul>
-            <li><span id="days"></span>days</li>
-            <li><span id="hours"></span>Hours</li>
-            <li><span id="minutes"></span>Minutes</li>
-            <li><span id="seconds"></span>Seconds</li>
-          </ul>
+    <div id="bag">
+        <div id="credits" class="corners">
+            <h1>Credits</h1>
+            <br>
+            <a href="https://codepen.io/AllThingsSmitty/pen/JJavZN" target="_blank" rel="noopener noreferrer">
+                Thanks to Matt Smith
+            </a>
+            on codepen,
+            <br>
+            <a href="https://countapi.xyz/" target="_blank" rel="noopener noreferrer">
+                CountAPI
+            </a>, and
+            <br>
+            <a href="https://stackoverflow.com/a/5568484" target="_blank" rel="noopener noreferrer">
+                Marcel
+            </a>
+            and
+            <a href="https://stackoverflow.com/a/35197259">
+                maowtm
+            </a>
+            from Stack Overflow
         </div>
-        <div id="content" class="emoji">
-            <span>🕹️</span>
-            <span>👾</span>
-            <span>🎮</span>
-        </div>
-        <a href="https://store.steampowered.com/steamdeck/" target="_blank" rel="noopener noreferrer">
-            <h1 id="headline">Reserve Your Spot In Line Here</h1>
-        </a>
     </div>
-
 
     <!-- ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5290227775393401"
