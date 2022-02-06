@@ -248,13 +248,13 @@
                         <h1>Reserve Your Spot In Line Here</h1>
                     </a>
                     <a href="[pathcalloutembargo]" onclick="setTimeout(() => { defaultLoad(); }, 50);">
-                        <h1>And See How Long Untill The Reviews Release</h1>
+                        <h1>And See How Long Until The Reviews Release</h1>
                     </a>
                 </div>
                 `.replace("[pathcalloutcred]", window.location.pathname + "#credits");
                 if (goback){
                     f = f.replace("[pathcalloutembargo]", window.location.pathname) // Racecondition with the onclick
-                    f = f.replace("And See How Long Untill The Reviews Release","Go Back To The Main Page")
+                    f = f.replace("And See How Long Until The Reviews Release","Go Back To The Main Page")
                 } else {
                     f = f.replace("[pathcalloutembargo]", window.location.pathname + "#embargo")
                 }
