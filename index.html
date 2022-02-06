@@ -35,7 +35,13 @@
 
         body {
             text-shadow: 6px 6px 15px black;
-            background-color: #6A5DF8;
+            /* background-color: #6A5DF8; */
+
+        }
+
+        /* This is now the background for your body above
+        As such some of the styling elements have made their way over to here */
+        section.gradient {
             align-items: center;
             display: flex;
             font-family: -apple-system,
@@ -47,36 +53,43 @@
                 Cantarell,
                 "Helvetica Neue",
                 sans-serif;
-        }
 
-        /* This is now the background for your body above
-        As such some of the styling elements have made their way over to here */
-        #gradient-background {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-            z-index: 0;
-        }
-
-        #gradient-background:before {
-            content: "";
             position: absolute;
-            z-index: -1;
-            width: var(--vw);
-            height: var(--vh);
-            /* Feel free to add more colours here (separated by commas), although, the animation may need adjusting if you do */
-            background: linear-gradient(137.42deg, #1A9FFF 0%, #6A5DF8 50.43%, #C957E6 100%);
-            animation: gradient 20s infinite ease;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(137.42deg, #1a75ff, #6a5df8, #c957e6, #d2486b, #bf44ac, #ab47d0, #9460f3, #46aced, #4ec4a3, #b8ba05, #d2486b);
+            background-size: 2200% 2200%;
+            -webkit-animation: DeckGradient 60s ease infinite;
+            -moz-animation: DeckGradient 60s ease infinite;
+            animation: DeckGradient 60s ease infinite;
+        }
+
+        @-webkit-keyframes DeckGradient {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        @-moz-keyframes DeckGradient {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        @keyframes DeckGradient {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        section.gradient.inverted p,
+        section.gradient.inverted li {
+            color: #FFFFFF;
         }
 
         /* This animation is simply rotating the gradient above, whilst sliding the image over and zooming in slightly.
         This gives the effect that the colours are shifting rather than just sliding across the screen or rotating..
         Nothing major, just a subtle effect! */
-        @keyframes gradient {
+        /* @keyframes gradient {
             0% {
                 transform: rotate(0deg) translateX(-25%) scale(2);
             }
@@ -88,7 +101,7 @@
             100% {
                 transform: rotate(720deg) translateX(-25%) scale(2);
             }
-        }
+        } */
 
         .container {
             color: rgb(255, 255, 255);
@@ -180,7 +193,7 @@
         }
 
         a {
-            color: salmon;
+            color: #c4dcfd;
         }
 
         #bag {
@@ -211,7 +224,8 @@
             console.log("Filling Main");
             // Fill Default HTML
             f = `
-                <div id="gradient-background">
+                <section class="inverted gradient home" id="handson">
+                
                 <div id="visits" class="corners">Loading fun data...</div>
                 <div id="credits" class="corners">
                     <a href="[pathcalloutcred]" onclick="setTimeout(() => { defaultLoad(); }, 50);">
@@ -249,14 +263,14 @@
                         <h1>Reserve Your Spot In Line Here</h1>
                     </a>
                     <a href="[pathcalloutembargo]" onclick="setTimeout(() => { defaultLoad(); }, 50);">
-                        <h1>And See How Long Untill The Reviews Release</h1>
+                        <h1>And See How Long Untill The Previews Release</h1>
                     </a>
                 </div>
-                </div>
+                </section>
                 `.replace("[pathcalloutcred]", window.location.pathname + "#credits");
             if (goback) {
                 f = f.replace("[pathcalloutembargo]", window.location.pathname) // Racecondition with the onclick
-                f = f.replace("And See How Long Untill The Reviews Release", "Go Back To The Main Page")
+                f = f.replace("And See How Long Untill The Previews Release", "Go Back To The Main Page")
             } else {
                 f = f.replace("[pathcalloutembargo]", window.location.pathname + "#embargo")
             }
@@ -267,7 +281,7 @@
             // Fill Credits HTML (and maybe css)
             document.body.innerHTML = `
             <div id="bag">
-                <div id="gradient-background">
+                <section class="inverted gradient home" id="handson">
                 <div id="credits-wholepage" class="corners">
                     <h1>Credits</h1>
                     <br>
@@ -289,7 +303,7 @@
                     </a>
                     from Stack Overflow
                 </div>
-                </div>
+                </section>
             </div>
             `;
         }
@@ -299,12 +313,13 @@
             console.log(window.location.href);
             if (window.location.href.includes("credits")) {
 
+                clearInterval(interv);
                 fillCreds();
                 document.title = "Credits"
 
             } else if (window.location.href.includes("embargo")) { // Embargo
                 fillMain(true);
-                countdownPage('Feb 7 2022 10:00:00 PST', "PREVIEWS OF THE STEAM DECK WILL RELEASE IN", "Preview Embargo Lifted\nGo check out the early reviews!"); // Not sure
+                countdownPage('Feb 7 2022 10:00:00 PST', "PREVIEWS OF THE STEAM DECK WILL RELEASE IN", "Preview Embargo Lifted\nGo check out the early previews!"); // Not sure
                 // update, this is the early preview date // polygon says embargo on release day, but reddit says embargo on 7th
                 document.title = "Days To Steam Deck Early Release Coverage"
             } else { // Real launch
@@ -340,12 +355,12 @@
                     const countDown = new Date(birthday).getTime()
                     clearInterval(interv);
                     console.log(interv);
+                    document.getElementById("headline").innerText = countHeadline;
                     interv = setInterval(function () {
 
                         const now = new Date().getTime(),
                             distance = countDown - now;
 
-                        document.getElementById("headline").innerText = countHeadline;
                         document.getElementById("days").innerText = Math.floor(distance / (day)),
                             document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
                             document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
@@ -431,6 +446,18 @@
             }
         }
         defaultLoad()
+        function pageKeeper() {
+            let lastCheck = window.location.href;
+            let guard = setInterval(() => {
+                if (lastCheck != window.location.href) { // Page changed behind my back
+                    console.log("Page Change Detected");
+                    console.log(window.location.href)
+                    defaultLoad();
+                    lastCheck = window.location.href;
+                }
+            }, 0);
+        }
+        pageKeeper();
     </script>
 
 
