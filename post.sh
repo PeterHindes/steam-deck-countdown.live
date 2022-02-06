@@ -6,10 +6,16 @@ set -o xtrace # Show the commands like bat files do
 
 # Git no support hard links
 # symlinks dont work with ipfs as of writing
-if [ ! -f "publishlinked/index.html" ]; then # if not already linked
+if cmp --silent -- "./publishlinked/index.html" "./index.html"; then
+echo index.html already linked
+else
+rm ./publishlinked/index.html
 ln index.html publishlinked/
 fi
-if [ ! -f "publishlinked/favicon.ico" ]; then # if not already linked
+if cmp --silent -- "./publishlinked/favicon.ico" "./favicon.ico"; then
+echo favicon.ico already linked
+else
+rm ./publishlinked/favicon.ico
 ln favicon.ico publishlinked/
 fi
 
