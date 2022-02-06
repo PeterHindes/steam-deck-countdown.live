@@ -19,6 +19,7 @@ sss=${ss[1]}
 echo $sss
 # ipfs daemon & # Does not work if already running
 ipfs name publish --key=GitKey $sss
+echo Remember to pin to pinata before you close the dev environment
 
 # Add to pinata for quick clouflare link
 #. ./secrets.sh
