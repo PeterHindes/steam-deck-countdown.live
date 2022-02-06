@@ -21,7 +21,17 @@ echo $sss
 ipfs name publish --key=GitKey $sss
 
 # Add to pinata for quick clouflare link
-. ./secrets.sh
-curl -X POST -H "pinata_api_key: $PIN_KEY; pinata_secret_api_key: $PIN_SEC" -d "{
-    hashToPin: $sss
-}"
+#. ./secrets.sh
+#curl -X POST -H "Content-Type: multipart/form-data; pinata_api_key: \"$PIN_KEY\"; pinata_secret_api_key: \"$PIN_SEC\"" -d "{hashToPin: $sss}" https://api.pinata.cloud/pinning/pinByHash
+
+# Getting Close
+# curl --location --request POST 'https://api.pinata.cloud/pinning/pinByHash' \
+# --header "'pinata_api_key: $PIN_KEY'" \
+# --header "'pinata_secret_api_key: $PIN_SEC'" \
+# --header 'Content-Type: application/json' \
+# --data-raw "'{
+#     "hashToPin": "$sss",
+#     "pinataMetadata": {
+#         "name": "postedfolder"
+#     }
+# }'"
