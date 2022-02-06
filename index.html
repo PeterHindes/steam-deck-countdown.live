@@ -207,13 +207,13 @@
 <body>
     <div id="gradient-background">
         <script>
-            function fillMain() {
+            function fillMain(goback) {
                 console.log("Filling Main");
                 // Fill Default HTML
                 document.body.innerHTML = `
             <div id="visits" class="corners">Loading fun data...</div>
             <div id="credits" class="corners">
-                <a href="[pathcallout]">
+                <a href="[pathcalloutcred]">
                     Credits
                 </a>
             </div>
@@ -230,7 +230,7 @@
             </div>
             
             <div class="container">
-                <h1 id="headline">The Steam Deck Will Release In</h1>
+                <h1 id="headline"></h1>
                 <div id="countdown">
                 <ul>
                     <li><span id="days"></span>days</li>
@@ -245,10 +245,18 @@
                     <span>🎮</span>
                 </div>
                 <a href="https://store.steampowered.com/steamdeck/" target="_blank" rel="noopener noreferrer">
-                    <h1 id="headline">Reserve Your Spot In Line Here</h1>
+                    <h1>Reserve Your Spot In Line Here</h1>
+                </a>
+                <a href="[pathcalloutembargo]">
+                    <h1>And See How Long Untill The Reviews Release</h1>
                 </a>
             </div>
-            `.replace("[pathcallout]", window.location.pathname + "?credits");
+            `.replace("[pathcalloutcred]", window.location.pathname + "?credits");
+            if (goback){
+                document.innerHTML = document.innerHTML.replace("[pathcalloutembargo]", window.location.pathname)
+            } else {
+                document.innerHTML = document.innerHTML.replace("[pathcalloutembargo]", window.location.pathname + "?embargo")
+            }
             }
             function fillCreds() {
                 console.log("Filling Creds");
@@ -286,14 +294,15 @@
 
                 fillCreds();
 
-            } else if (window.location.href.includes("embargo")) {
-                fillMain();
-                countdownPage('Feb 25 2022 10:00:00 PST');
-            } else {
-                fillMain();
-                countdownPage('Feb 25 2022 10:00:00 PST');
+            } else if (window.location.href.includes("embargo")) { // Embargo
+                fillMain(true);
+                countdownPage('Feb 7 2022 10:00:00 PST', "PREVIEWS OF THE STEAM DECK WILL RELEASE IN", "Preview Embargo Lifted\nGo check out the early reviews!"); // Not sure
+                // polygon says embargo on release day, but reddit says embargo on 7th
+            } else { // Real launch
+                fillMain(false);
+                countdownPage('Feb 25 2022 10:00:00 PST', "THE STEAM DECK WILL RELEASE IN", "The Steam Deck is Right Out Now!\n Get One If You Can!");
             }
-            function countdownPage(date) {
+            function countdownPage(date, countHeadline, releaseMsg) {
                 // Thanks to Matt Smith on CodePen, https://codepen.io/AllThingsSmitty/pen/JJavZN
                 (function () {
                     const second = 1000,
@@ -324,14 +333,15 @@
                             const now = new Date().getTime(),
                                 distance = countDown - now;
 
+                            document.getElementById("headline").innerText = countHeadline;
                             document.getElementById("days").innerText = Math.floor(distance / (day)),
-                                document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
-                                document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
-                                document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
+                            document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
+                            document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
+                            document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
 
                             //do something later when date is reached
                             if (distance < 0) {
-                                document.getElementById("headline").innerText = "The Steam Deck is Right Out Now!\n Get One If You Can!";
+                                document.getElementById("headline").innerText = releaseMsg;
                                 document.getElementById("countdown").style.display = "none";
                                 document.getElementById("content").style.display = "block";
                                 clearInterval(x);
