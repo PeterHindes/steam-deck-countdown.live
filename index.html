@@ -35,7 +35,13 @@
 
         body {
             text-shadow: 6px 6px 15px black;
-            background-color: #6A5DF8;
+            /* background-color: #6A5DF8; */
+
+        }
+
+        /* This is now the background for your body above
+        As such some of the styling elements have made their way over to here */
+        section.gradient {
             align-items: center;
             display: flex;
             font-family: -apple-system,
@@ -47,36 +53,43 @@
                 Cantarell,
                 "Helvetica Neue",
                 sans-serif;
-        }
 
-        /* This is now the background for your body above
-        As such some of the styling elements have made their way over to here */
-        #gradient-background {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-            z-index: 0;
-        }
-
-        #gradient-background:before {
-            content: "";
             position: absolute;
-            z-index: -1;
-            width: var(--vw);
-            height: var(--vh);
-            /* Feel free to add more colours here (separated by commas), although, the animation may need adjusting if you do */
-            background: linear-gradient(137.42deg, #1A9FFF 0%, #6A5DF8 50.43%, #C957E6 100%);
-            animation: gradient 20s infinite ease;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(137.42deg, #1a75ff, #6a5df8, #c957e6, #d2486b, #bf44ac, #ab47d0, #9460f3, #46aced, #4ec4a3, #b8ba05, #d2486b);
+            background-size: 2200% 2200%;
+            -webkit-animation: DeckGradient 60s ease infinite;
+            -moz-animation: DeckGradient 60s ease infinite;
+            animation: DeckGradient 60s ease infinite;
+        }
+
+        @-webkit-keyframes DeckGradient {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        @-moz-keyframes DeckGradient {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        @keyframes DeckGradient {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        section.gradient.inverted p,
+        section.gradient.inverted li {
+            color: #FFFFFF;
         }
 
         /* This animation is simply rotating the gradient above, whilst sliding the image over and zooming in slightly.
         This gives the effect that the colours are shifting rather than just sliding across the screen or rotating..
         Nothing major, just a subtle effect! */
-        @keyframes gradient {
+        /* @keyframes gradient {
             0% {
                 transform: rotate(0deg) translateX(-25%) scale(2);
             }
@@ -88,7 +101,7 @@
             100% {
                 transform: rotate(720deg) translateX(-25%) scale(2);
             }
-        }
+        } */
 
         .container {
             color: rgb(255, 255, 255);
@@ -180,7 +193,7 @@
         }
 
         a {
-            color: salmon;
+            color: #c4dcfd;
         }
 
         #bag {
@@ -205,12 +218,14 @@
 </head>
 
 <body>
-    <div id="gradient-background">
-        <script>
-            function fillMain(goback) {
-                console.log("Filling Main");
-                // Fill Default HTML
-                f = `
+
+    <script>
+        function fillMain(goback) {
+            console.log("Filling Main");
+            // Fill Default HTML
+            f = `
+                <section class="inverted gradient home" id="handson">
+                
                 <div id="visits" class="corners">Loading fun data...</div>
                 <div id="credits" class="corners">
                     <a href="[pathcalloutcred]" onclick="setTimeout(() => { defaultLoad(); }, 50);">
@@ -248,23 +263,28 @@
                         <h1>Reserve Your Spot In Line Here</h1>
                     </a>
                     <a href="[pathcalloutembargo]" onclick="setTimeout(() => { defaultLoad(); }, 50);">
+
                         <h1>And See How Long Until The Reviews Release</h1>
+
                     </a>
                 </div>
+                </section>
                 `.replace("[pathcalloutcred]", window.location.pathname + "#credits");
-                if (goback){
-                    f = f.replace("[pathcalloutembargo]", window.location.pathname) // Racecondition with the onclick
-                    f = f.replace("And See How Long Until The Reviews Release","Go Back To The Main Page")
-                } else {
-                    f = f.replace("[pathcalloutembargo]", window.location.pathname + "#embargo")
-                }
-                document.body.innerHTML = f;
+
+            if (goback) {
+                f = f.replace("[pathcalloutembargo]", window.location.pathname) // Racecondition with the onclick
+                f = f.replace("And See How Long Untill The Previews Release", "Go Back To The Main Page")
+            } else {
+                f = f.replace("[pathcalloutembargo]", window.location.pathname + "#embargo")
             }
-            function fillCreds() {
-                console.log("Filling Creds");
-                // Fill Credits HTML (and maybe css)
-                document.body.innerHTML = `
+            document.body.innerHTML = f;
+        }
+        function fillCreds() {
+            console.log("Filling Creds");
+            // Fill Credits HTML (and maybe css)
+            document.body.innerHTML = `
             <div id="bag">
+                <section class="inverted gradient home" id="handson">
                 <div id="credits-wholepage" class="corners">
                     <h1>Credits</h1>
                     <br>
@@ -286,155 +306,169 @@
                     </a>
                     from Stack Overflow
                 </div>
+                </section>
             </div>
             `;
+        }
+        let interv = "unset";
+        function defaultLoad() {
+            console.log("DefLoad");
+            console.log(window.location.href);
+            if (window.location.href.includes("credits")) {
+
+                clearInterval(interv);
+                fillCreds();
+                document.title = "Credits"
+
+            } else if (window.location.href.includes("embargo")) { // Embargo
+                fillMain(true);
+                countdownPage('Feb 7 2022 10:00:00 PST', "PREVIEWS OF THE STEAM DECK WILL RELEASE IN", "Preview Embargo Lifted\nGo check out the early previews!"); // Not sure
+                // update, this is the early preview date // polygon says embargo on release day, but reddit says embargo on 7th
+                document.title = "Days To Steam Deck Early Release Coverage"
+            } else { // Real launch
+                fillMain(false);
+                countdownPage('Feb 25 2022 10:00:00 PST', "THE STEAM DECK WILL RELEASE IN", "The Steam Deck is Right Out Now!\n Get One If You Can!");
+                document.title = "Days To Steam Deck Release"
             }
-            let interv = "unset";
-            function defaultLoad() {
-                console.log("DefLoad");
-                console.log(window.location.href);
-                if (window.location.href.includes("credits")) {
+            function countdownPage(date, countHeadline, releaseMsg) {
+                // Thanks to Matt Smith on CodePen, https://codepen.io/AllThingsSmitty/pen/JJavZN
+                (function () {
+                    const second = 1000,
+                        minute = second * 60,
+                        hour = minute * 60,
+                        day = hour * 24;
 
-                    fillCreds();
-                    document.title = "Credits"
+                    let today = new Date(),
+                        dd = String(today.getDate()).padStart(2, "0"),
+                        mm = String(today.getMonth() + 1).padStart(2, "0"),
+                        // yyyy = today.getFullYear(),
+                        yyyy = "2022",
+                        // nextYear = yyyy + 1,
+                        //dayMonth = "02/25/", // February 25, 2022
+                        birthday = date; // Idk probably local time relative? Update it is, checked it with this great calculator https://www.timeanddate.com/date/timezoneduration.html
 
-                } else if (window.location.href.includes("embargo")) { // Embargo
-                    fillMain(true);
-                    countdownPage('Feb 7 2022 10:00:00 PST', "PREVIEWS OF THE STEAM DECK WILL RELEASE IN", "Preview Embargo Lifted\nGo check out the early reviews!"); // Not sure
-                    // update, this is the early preview date // polygon says embargo on release day, but reddit says embargo on 7th
-                    document.title = "Days To Steam Deck Early Release Coverage"
-                } else { // Real launch
-                    fillMain(false);
-                    countdownPage('Feb 25 2022 10:00:00 PST', "THE STEAM DECK WILL RELEASE IN", "The Steam Deck is Right Out Now!\n Get One If You Can!");
-                    document.title = "Days To Steam Deck Release"
+                    //today = new Date('Feb 28 2013 19:00:00 EST')
+
+                    today = mm + "/" + dd + "/" + yyyy; // Should be local time
+                    // if (today > birthday) {
+                    //     birthday = dayMonth + nextYear;
+                    // }
+                    //end
+
+                    const countDown = new Date(birthday).getTime()
+                    clearInterval(interv);
+                    console.log(interv);
+                    document.getElementById("headline").innerText = countHeadline;
+                    interv = setInterval(function () {
+
+                        const now = new Date().getTime(),
+                            distance = countDown - now;
+
+                        document.getElementById("days").innerText = Math.floor(distance / (day)),
+                            document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
+                            document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
+                            document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
+
+                        //do something later when date is reached
+                        if (distance < 0) {
+                            document.getElementById("headline").innerText = releaseMsg;
+                            document.getElementById("countdown").style.display = "none";
+                            document.getElementById("content").style.display = "block";
+                            clearInterval(x);
+                        }
+                        //seconds
+                    }, 0)
+                }());
+
+                // Count api in a function
+                // Thanks https://www.sohamkamani.com/blog/javascript-localstorage-with-ttl-expiry/
+                function setWithExpiry(key, value, timeoutEnabled) {
+                    //const now = new Date()
+                    var d = new Date();
+                    d.setUTCHours(24, 0, 0, 0); // next midnight
+
+                    // `item` is an object which contains the original value
+                    // as well as the time when it's supposed to expire
+                    let item
+                    if (timeoutEnabled) {
+                        item = {
+                            value: value,
+                            expiry: d.getTime(), // Thanks https://stackoverflow.com/a/15790005   //now.getTime() + ttl, 
+                        }
+                    } else {
+                        item = {
+                            value: value,
+                            expiry: "No", // Thanks https://stackoverflow.com/a/15790005   //now.getTime() + ttl, 
+                        }
+                    }
+                    localStorage.setItem(key, JSON.stringify(item))
                 }
-                function countdownPage(date, countHeadline, releaseMsg) {
-                    // Thanks to Matt Smith on CodePen, https://codepen.io/AllThingsSmitty/pen/JJavZN
-                    (function () {
-                        const second = 1000,
-                            minute = second * 60,
-                            hour = minute * 60,
-                            day = hour * 24;
-
-                        let today = new Date(),
-                            dd = String(today.getDate()).padStart(2, "0"),
-                            mm = String(today.getMonth() + 1).padStart(2, "0"),
-                            // yyyy = today.getFullYear(),
-                            yyyy = "2022",
-                            // nextYear = yyyy + 1,
-                            //dayMonth = "02/25/", // February 25, 2022
-                            birthday = date; // Idk probably local time relative? Update it is, checked it with this great calculator https://www.timeanddate.com/date/timezoneduration.html
-
-                        //today = new Date('Feb 28 2013 19:00:00 EST')
-
-                        today = mm + "/" + dd + "/" + yyyy; // Should be local time
-                        // if (today > birthday) {
-                        //     birthday = dayMonth + nextYear;
-                        // }
-                        //end
-
-                        const countDown = new Date(birthday).getTime()
-                        clearInterval(interv);
-                        console.log(interv);
-                        interv = setInterval(function () {
-
-                                const now = new Date().getTime(),
-                                    distance = countDown - now;
-
-                                document.getElementById("headline").innerText = countHeadline;
-                                document.getElementById("days").innerText = Math.floor(distance / (day)),
-                                document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
-                                document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
-                                document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
-
-                                //do something later when date is reached
-                                if (distance < 0) {
-                                    document.getElementById("headline").innerText = releaseMsg;
-                                    document.getElementById("countdown").style.display = "none";
-                                    document.getElementById("content").style.display = "block";
-                                    clearInterval(x);
-                                }
-                                //seconds
-                            }, 0)
-                    }());
-
-                    // Count api in a function
-                    // Thanks https://www.sohamkamani.com/blog/javascript-localstorage-with-ttl-expiry/
-                    function setWithExpiry(key, value, timeoutEnabled) {
-                        //const now = new Date()
-                        var d = new Date();
-                        d.setUTCHours(24, 0, 0, 0); // next midnight
-
-                        // `item` is an object which contains the original value
-                        // as well as the time when it's supposed to expire
-                        let item
-                        if (timeoutEnabled) {
-                            item = {
-                                value: value,
-                                expiry: d.getTime(), // Thanks https://stackoverflow.com/a/15790005   //now.getTime() + ttl, 
-                            }
+                function getWithExpiry(key) {
+                    const itemStr = localStorage.getItem(key)
+                    // if the item doesn't exist, return null
+                    if (!itemStr) {
+                        return null
+                    }
+                    const item = JSON.parse(itemStr)
+                    const now = new Date()
+                    // compare the expiry time of the item with the current time
+                    if (now.getTime() > item.expiry && item.expiry != "No") {
+                        // If the item is expired, delete the item from storage
+                        // and return null
+                        localStorage.removeItem(key)
+                        return null
+                    }
+                    return item.value
+                }
+                function counterInit(codeName, noSpam, timeOutAfterMidnight, htmlPreOnLoad, htmlPostOnload) {
+                    var xhr = new XMLHttpRequest();
+                    let modeName = "hit";
+                    // Cookies (not really, now we use local storage), the europeans will be scared, but they are not for tracking
+                    if (noSpam) {
+                        let herebefore = getWithExpiry(codeName) == "yes";
+                        if (herebefore) {
+                            modeName = "get";
                         } else {
-                            item = {
-                                value: value,
-                                expiry: "No", // Thanks https://stackoverflow.com/a/15790005   //now.getTime() + ttl, 
-                            }
+                            setWithExpiry(codeName ? codeName : "@root", "yes", timeOutAfterMidnight)
                         }
-                        localStorage.setItem(key, JSON.stringify(item))
                     }
-                    function getWithExpiry(key) {
-                        const itemStr = localStorage.getItem(key)
-                        // if the item doesn't exist, return null
-                        if (!itemStr) {
-                            return null
-                        }
-                        const item = JSON.parse(itemStr)
-                        const now = new Date()
-                        // compare the expiry time of the item with the current time
-                        if (now.getTime() > item.expiry && item.expiry != "No") {
-                            // If the item is expired, delete the item from storage
-                            // and return null
-                            localStorage.removeItem(key)
-                            return null
-                        }
-                        return item.value
+                    //console.log(herebefore);
+                    console.log(modeName);
+                    xhr.open("GET", "https://api.countapi.xyz/" + modeName + "/steam-deck-countdown.live" + (codeName ? "-" : "") + codeName + "/visits");
+                    xhr.responseType = "json";
+                    xhr.onload = function () { //Warning Race Condition! Its fixed now
+                        document.getElementById("visits").innerHTML = document.getElementById("visits").innerHTML.replace(/Loading fun data\.\.\./g, "")
+                        document.getElementById("visits").innerHTML = document.getElementById("visits").innerHTML + htmlPreOnLoad + this.response.value + htmlPostOnload
                     }
-                    function counterInit(codeName, noSpam, timeOutAfterMidnight, htmlPreOnLoad, htmlPostOnload) {
-                        var xhr = new XMLHttpRequest();
-                        let modeName = "hit";
-                        // Cookies (not really, now we use local storage), the europeans will be scared, but they are not for tracking
-                        if (noSpam) {
-                            let herebefore = getWithExpiry(codeName) == "yes";
-                            if (herebefore) {
-                                modeName = "get";
-                            } else {
-                                setWithExpiry(codeName ? codeName : "@root", "yes", timeOutAfterMidnight)
-                            }
-                        }
-                        //console.log(herebefore);
-                        console.log(modeName);
-                        xhr.open("GET", "https://api.countapi.xyz/" + modeName + "/steam-deck-countdown.live" + (codeName ? "-" : "") + codeName + "/visits");
-                        xhr.responseType = "json";
-                        xhr.onload = function () { //Warning Race Condition! Its fixed now
-                            document.getElementById("visits").innerHTML = document.getElementById("visits").innerHTML.replace(/Loading fun data\.\.\./g, "")
-                            document.getElementById("visits").innerHTML = document.getElementById("visits").innerHTML + htmlPreOnLoad + this.response.value + htmlPostOnload
-                        }
-                        xhr.send();
-                    }
-
-                    counterInit("", false, false, "<br>Loaded ", " times! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a>")
-                    counterInit("uniq", true, false, "<br>", " unique visits since 1/31/22 at 6am!")
-                    counterInit("todayuniq", true, true, "<br>", " unique visits since midnight!")
+                    xhr.send();
                 }
+
+                counterInit("", false, false, "<br>Loaded ", " times! <a href=\"https://www.reddit.com/r/SteamDeck/comments/sgsq3x/i_made_with_a_countdown_for_the_steam_deck_since/\">The hype is real!</a>")
+                counterInit("uniq", true, false, "<br>", " unique visits since 1/31/22 at 6am!")
+                counterInit("todayuniq", true, true, "<br>", " unique visits since midnight!")
             }
-            defaultLoad()
-        </script>
+        }
+        defaultLoad()
+        function pageKeeper() {
+            let lastCheck = window.location.href;
+            let guard = setInterval(() => {
+                if (lastCheck != window.location.href) { // Page changed behind my back
+                    console.log("Page Change Detected");
+                    console.log(window.location.href)
+                    defaultLoad();
+                    lastCheck = window.location.href;
+                }
+            }, 0);
+        }
+        pageKeeper();
+    </script>
 
 
-        <!-- ads
+    <!-- ads
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5290227775393401"
         crossorigin="anonymous"></script> -->
-        <!-- Bottom Of Page -->
-        <!-- <ins class="adsbygoogle"
+    <!-- Bottom Of Page -->
+    <!-- <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-5290227775393401"
         data-ad-slot="7096253206"
@@ -449,7 +483,13 @@
             root.style.setProperty('--vh', window.outerHeight + "vmin");
         }
     </script> -->
-    </div>
+    <script>
+        {
+            let root = document.documentElement;
+            root.style.setProperty('--vw', window.outerWidth + "vmin");
+            root.style.setProperty('--vh', window.outerHeight + "vmin");
+        }
+    </script>
 </body>
 
 </html>
