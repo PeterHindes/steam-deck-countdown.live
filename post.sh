@@ -6,6 +6,7 @@ set -o xtrace # Show the commands like bat files do
 
 # Git no support hard links
 # symlinks dont work with ipfs as of writing
+mkdir -p ./publishlinked/
 if cmp --silent -- "./publishlinked/index.html" "./index.html"; then
 echo index.html already linked
 else
